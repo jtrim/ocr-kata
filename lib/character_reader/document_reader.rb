@@ -34,10 +34,10 @@ class CharacterReader::DocumentReader
     end
 
     def read(input_document)
-      document_lines = input_document.split(/^\s*$/).map(&drop_leading_newline)
+      ocr_numbers = input_document.split(/^\s*$/).map(&drop_leading_newline)
 
-      document_lines.map do |document|
-        characters_by_lines = document.lines.lazy
+      ocr_numbers.map do |ocr_number|
+        characters_by_lines = ocr_number.lines.lazy
                                 .map(&strip_newlines)
                                 .map(&explode_to_single_characters)
                                 .map(&group_in_threes)

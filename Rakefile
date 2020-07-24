@@ -21,7 +21,7 @@ task :console do
   pry
 end
 
-task :generate_valid_account_numbers_file do
+task :generate_account_numbers_file do
   numbers = 10000.times.lazy.map { rand(1000000000).to_s.rjust(9, "0") }.lazy
   valid_numbers = numbers.select { |n| CharacterReader::AccountNumberChecksum.new(n).valid? }.take(30).force
   invalid_numbers = numbers.reject { |n| CharacterReader::AccountNumberChecksum.new(n).valid? }.take(10).force
@@ -36,5 +36,6 @@ task :validate_account_numbers_file do
 
   document = CharacterReader::AccountNumberDocument.new(File.read(path))
 
+  # .invalid_account_numbers is a two-tuple of the account number and the error code
   puts document.valid_account_numbers + document.invalid_account_numbers.map { |entry| "#{entry.first.ljust(9, " ")} #{entry.last}" }
 end
